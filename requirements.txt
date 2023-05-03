@@ -1,0 +1,12 @@
+# wheel
+# TogglPy~=0.1.2
+# numpy==1.18.1
+# pandas==1.0.1
+# click==8.0.3
+# python-dateutil
+
+python-dotenv
+jinja2
+click
+# inflect
+pydantic

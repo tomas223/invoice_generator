@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Faktura {{ faktura_cislo }}</title>
+  <style>
+    .CisloFaktury {
+      width: 200px;
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .DodavOdber_Leva {
+      width: 75%;
+      font-weight: bold;
+    }
+
+    .DodavOdber_Prava {
+      width: 25%;
+      font-weight: bold;
+    }
+
+    .PlatPodmNadpis {
+      width: 150px;
+      font-weight: bold;
+    }
+
+    .PlatPodm_Leva1 {
+      width: 20%;
+    }
+
+    .PlatPodm_Leva2 {
+      width: 45%;
+    }
+
+    .PlatPodm_Prava1 {
+      width: 20%;
+    }
+
+    .PlatPodm_Prava2 {
+      width: 20%;
+    }
+
+    .SeznamHlavicka1 {
+      width: 30%;
+      font-weight: bold;
+    }
+
+    .SeznamHlavicka6 {
+      width: 11%;
+      font-weight: bold;
+      text-align: right;
+    }
+
+    .SeznamPolozky6 {
+      text-align: right;
+    }
+
+    .CelkemHlavicka {
+      width: 10%;
+      font-weight: bold;
+      text-align: right;
+      word-wrap: break-word;
+    }
+
+    .PodpisHlavicka {
+      width: 62%;
+      font-weight: bold;
+    }
+
+    .CastkaCelkemHlavicka {
+      font-size: 20px;
+    }
+
+    .CastkaCelkemHodnota {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .nosplit {
+      page-break-inside: avoid;
+    }
+  </style>
+</head>
+
+<body>
+  <table>
+    <tr>
+      <td class="CisloFaktury">Faktura číslo:</td>
+      <td class="CisloFaktury">{{ invoice_no }}</td>
+    </tr>
+  </table>
+
+  <hr />
+  <br />
+
+  <table>
+    <tr>
+      <td class="DodavOdber_Leva">Dodavatel:</td>
+      <td class="DodavOdber_Prava">Odběratel:</td>
+    </tr>
+    <tr>
+      <td>
+        <br />
+        {{ SUPPLIER_NAME }}
+        {% for address_line in SUPPLIER_ADDRESS_LINES %}
+        <br />{{ address_line }}
+        {% endfor %}
+      </td>
+      <td>
+        <br />
+        {{ CUSTOMER_NAME }}
+        {% for address_line in CUSTOMER_ADDRESS_LINES %}
+        <br />{{ address_line }}
+        {% endfor %}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <br />
+        IČ: {{ SUPPLIER_IC }}
+
+        {% for line in SUPPLIER_INFO_LINES %}
+        <br /> {{ line }}
+        {% endfor %}
+      </td>
+      <td>
+        <br />
+        IČ: {{ CUSTOMER_IC }}
+        {% for line in CUSTOMER_INFO_LINES %}
+        <br /> {{ line }}
+        {% endfor %}
+      </td>
+    </tr>
+  </table>
+
+  <hr />
+
+  <table>
+    <tr>
+      <td class="PlatPodmNadpis">
+        <br />
+        Platební podmínky:
+      </td>
+    </tr>
+    <tr>
+      <td class="PlatPodm_Leva1">
+        <br />Forma úhrady:
+        <br />Bankovní spojení:
+        <br />Číslo účtu:
+        <br />Variabilní symbol:
+        {% if BANK_IBAN is not none %} <br />IBAN: {% endif %}
+        {% if BANK_SWIFT is not none %} <br />BIC (SWIFT): {% endif %}
+      </td>
+      <td class="PlatPodm_Leva2">
+        <br />Bankovním převodem
+        <br />{{ BANK_CONNECTION_NAME }}
+        <br />{{ BANK_ACCOUNT_NO }}
+        <br />{{ bank_payment_ref_no }}
+        {% if BANK_IBAN is not none %} <br />{{ BANK_IBAN }} {% endif %}
+        {% if BANK_SWIFT is not none %} <br />{{ BANK_SWIFT }} {% endif %}
+      </td>
+      <td class="PlatPodm_Prava1">
+        Datum vystavení:<br />
+        Datum splatnosti:
+      </td>
+      <td class="PlatPodm_Prava2">
+        {{ issue_date }}<br />
+        {{ payment_due_date }}
+      </td>
+    </tr>
+  </table>
+
+  <hr />
+
+  <table>
+    <tr>
+      <td class="PlatPodmNadpis">Fakturuji vám:</td>
+    </tr>
+  </table>
+
+  <br />
+
+  <table>
+    <tr>
+      <td class="+ SeznamHlavicka1 +">Projekt</td>
+      <td class="+ SeznamHlavicka6 +">Částka</td>
+    </tr>
+
+    {% for project in PROJECTS %}
+    <tr>
+      <td>{{ project[0] }}</td>
+      <td class="SeznamPolozky6"">{{ '{:,.2f}'.format(project[1]) }} Kč</td>
+    </tr>
+    {% endfor %}
+
+  </table>
+
+  <hr />
+  <br />
+
+  <div><b>Datum dodání služby:</b> {{ service_delivery_date }}</div>
+
+  <div class=" nosplit">
+        <br />
+
+        <table>
+          <tr>
+            <td class="PodpisHlavicka">Vyřizuje:</td>
+          </tr>
+          <tr>
+            <td>
+              {% for line in SUPPLIER_ISSUED_BY_LINES %}
+              {{ line }}<br />
+              {% endfor %}
+            </td>
+
+            <td class="CastkaCelkemHlavicka">Částka celkem:</td>
+            <td class="CastkaCelkemHodnota">{{ '{:,.2f}'.format(price_sum) }} Kč</td>
+          </tr>
+        </table>
+        </div>
+</body>
+
+</html>
