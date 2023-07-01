@@ -1,7 +1,9 @@
 import os
-import click
 import datetime
 from logging import getLogger
+from typing import Tuple
+
+import click
 
 logger = getLogger(__name__)
 
@@ -33,7 +35,7 @@ def format_date(date: datetime.date):
 
 
 # Define the render function
-def render_invoice(template_name: str) -> tuple[str, str]:
+def render_invoice(template_name: str) -> Tuple[str, str]:
     # Calculate the dates
     today = datetime.date.today()
     last_day_of_previous_month = datetime.date(

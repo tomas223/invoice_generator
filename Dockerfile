@@ -3,7 +3,7 @@
 # Licensed under the MIT License. See https://go.microsoft.com/fwlink/?linkid=2090316 for license information.
 #-------------------------------------------------------------------------------------------------------------
 
-FROM python:3.7
+FROM python:3.8-buster
 
 # Avoid warnings by switching to noninteractive
 ENV DEBIAN_FRONTEND=noninteractive
@@ -36,7 +36,7 @@ RUN apt-get update \
     && pip --disable-pip-version-check --no-cache-dir install pylint \
     #
     # Install wkhtmltopdf
-    && wget -nv https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.buster_amd64.deb -O /tmp/wkhtmltopdf.deb \
+    && wget -nv https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.buster_amd64.deb -O /tmp/wkhtmltopdf.deb \
     && yes | apt install /tmp/wkhtmltopdf.deb \
     #
     # Update Python environment based on requirements.txt
