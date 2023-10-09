@@ -36,7 +36,15 @@ RUN apt-get update \
     && pip --disable-pip-version-check --no-cache-dir install pylint \
     #
     # Install wkhtmltopdf
-    && wget -nv https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.buster_amd64.deb -O /tmp/wkhtmltopdf.deb \
+    && dpkgArch="$(dpkg --print-architecture)"; \
+    case "${dpkgArch##*-}" in \
+    amd64) \
+    wget -nv https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.buster_amd64.deb -O /tmp/wkhtmltopdf.deb ;;\
+    arm64) \
+    wget -nv https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.buster_arm64.deb -O /tmp/wkhtmltopdf.deb ;;\
+    *) \
+    echo "unsupported architecture"; exit 1 ;;\
+    esac \
     && yes | apt install /tmp/wkhtmltopdf.deb \
     #
     # Update Python environment based on requirements.txt

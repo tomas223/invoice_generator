@@ -21,4 +21,4 @@ outputpdf="${filename_noext}.pdf"
 wkhtmltopdf "${inputhtml}" "${outputpdf}"
 
 # SUCCESS
-echo "Report converted to ${outputpdf}"
+echo "Report converted to: ${outputpdf}"
